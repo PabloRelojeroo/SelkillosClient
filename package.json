@@ -1,7 +1,7 @@
 {
     "name": "Selkillos-Client",
     "preductname": "Selkillos Client",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Launcher desarrollado por PabloRelojeroDev para la comunidad de Selkie",
     "main": "src/app.js",
     "author": {
