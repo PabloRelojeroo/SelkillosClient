@@ -119,14 +119,15 @@ class Splash {
             this.startLauncher();
         }).catch(e => {
             console.error(e);
-            return this.shutdown("Aucune connexion internet détectée,<br>veuillez réessayer ultérieurement.");
+            this.startLauncher();
+            //return this.shutdown("Aucune connexion internet détectée,<br>veuillez réessayer ultérieurement.");
         })
     }
 
     startLauncher() {
-        this.setStatus(`Démarrage du launcher`);
-        ipcRenderer.send('main-window-open');
-        ipcRenderer.send('update-window-close');
+        this.setStatus(`Iniciando launcher`);
+        // Trigger the transition logic in Main Process
+        ipcRenderer.send('splash-check-finished');
     }
 
     shutdown(text) {
@@ -141,15 +142,22 @@ class Splash {
     setStatus(text) {
         this.message.innerHTML = text;
     }
+}
 
-    toggleProgress() {
-        if (this.progress.classList.toggle("show")) this.setProgress(0, 1);
-    }
+// Fade out listener
+ipcRenderer.on('splash-fade-out', () => {
+    document.body.style.transition = "opacity 1s ease";
+    document.body.style.opacity = "0";
+});
 
-    setProgress(value, max) {
-        this.progress.value = value;
-        this.progress.max = max;
-    }
+toggleProgress() {
+    if (this.progress.classList.toggle("show")) this.setProgress(0, 1);
+}
+
+setProgress(value, max) {
+    this.progress.value = value;
+    this.progress.max = max;
+}
 }
 
 function sleep(ms) {

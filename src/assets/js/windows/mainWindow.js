@@ -20,14 +20,14 @@ function destroyWindow() {
     mainWindow = undefined;
 }
 
-function createWindow() {
+function createWindow(isSplash = false) {
     destroyWindow();
     mainWindow = new BrowserWindow({
         title: pkg.preductname,
-        width: 1280,
-        height: 720,
-        minWidth: 980,
-        minHeight: 552,
+        width: isSplash ? 400 : 1280,
+        height: isSplash ? 500 : 720,
+        minWidth: isSplash ? 400 : 980,
+        minHeight: isSplash ? 500 : 552,
         resizable: true,
         icon: `./src/assets/images/icon.${os.platform() === "win32" ? "ico" : "png"}`,
         frame: false,

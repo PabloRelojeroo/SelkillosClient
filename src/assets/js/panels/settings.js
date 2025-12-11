@@ -34,6 +34,14 @@ class Settings {
 
                     if (activeContainerSettings) activeContainerSettings.classList.toggle('active-container-settings');
                     document.querySelector(`#account-tab`).classList.add('active-container-settings');
+
+                    // Unhide play elements which might be hidden by CSS or previous interactions
+                    const playElements = document.querySelector('.play-elements');
+                    if (playElements) {
+                        playElements.classList.remove('hidden');
+                        // Force display if needed (though classList removal is cleaner if supported by CSS)
+                        playElements.style.display = 'flex';
+                    }
                     return changePanel('home')
                 }
 
@@ -60,7 +68,12 @@ class Settings {
 
                     if (id == 'add') {
                         document.querySelector('.cancel-home').style.display = 'inline'
-                        return changePanel('login')
+                        changePanel('login');
+                        // Trigger a re-render/logic check for login if needed. 
+                        // Since we can't easily access the Login instance here without a larger refactor, 
+                        // we rely on the CSS fixes and ensure the 'login' panel is active.
+                        // Ideally, we'd call login.init() again, but app structure might instantiate it once.
+                        return;
                     }
 
                     let account = await this.db.readData('accounts', id);
@@ -166,7 +179,7 @@ class Settings {
         javaPathText.textContent = `${await appdata()}/${process.platform == 'darwin' ? this.config.dataDirectory : `.${this.config.dataDirectory}`}/runtime`;
 
         let configClient = await this.db.readData('configClient')
-        let javaPath = configClient?.java_config?.java_path || 'Utiliser la version de java livre avec le launcher';
+        let javaPath = configClient?.java_config?.java_path || 'Usar la versión de Java incluida con el launcher';
         let javaPathInputTxt = document.querySelector(".java-path-input-text");
         let javaPathInputFile = document.querySelector(".java-path-input-file");
         javaPathInputTxt.value = javaPath;
@@ -187,12 +200,12 @@ class Settings {
                 javaPathInputTxt.value = file;
                 configClient.java_config.java_path = file
                 await this.db.updateData('configClient', configClient);
-            } else alert("Le nom du fichier doit être java ou javaw");
+            } else alert("El nombre del archivo debe ser java o javaw");
         });
 
         document.querySelector(".java-path-reset").addEventListener("click", async () => {
             let configClient = await this.db.readData('configClient')
-            javaPathInputTxt.value = 'Utiliser la version de java livre avec le launcher';
+            javaPathInputTxt.value = 'Usar la versión de Java incluida con el launcher';
             configClient.java_config.java_path = null
             await this.db.updateData('configClient', configClient);
         });

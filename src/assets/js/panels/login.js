@@ -13,14 +13,92 @@ class Login {
         this.config = config;
         this.db = new database();
 
+        // Initialize listeners for both modes
+        this.getMicrosoft();
+        this.getCrack();
+
+        // Handle switching logic via Toggle
+        const loginHome = document.querySelector('.login-home');
+        const loginOffline = document.querySelector('.login-offline');
+        const toggles = document.querySelectorAll('.toggle-input');
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener('change', (e) => {
+                const isOnline = e.target.checked;
+
+                // Sync all toggles
+                toggles.forEach(t => {
+                    t.checked = isOnline;
+                    // Update icon opacity
+                    const container = t.closest('.login-toggle-container');
+                    if (container) {
+                        const msIcon = container.querySelector('.icon-microsoft');
+                        const offIcon = container.querySelector('.icon-offline');
+                        if (isOnline) {
+                            msIcon.classList.add('active');
+                            offIcon.classList.remove('active');
+                        } else {
+                            msIcon.classList.remove('active');
+                            offIcon.classList.add('active');
+                        }
+                    }
+                });
+
+                if (isOnline) {
+                    loginOffline.classList.remove('active-mode');
+                    loginOffline.classList.add('inactive-mode');
+
+                    loginHome.classList.remove('inactive-mode');
+                    loginHome.classList.add('active-mode');
+                } else {
+                    loginHome.classList.remove('active-mode');
+                    loginHome.classList.add('inactive-mode');
+
+                    loginOffline.classList.remove('inactive-mode');
+                    loginOffline.classList.add('active-mode');
+                }
+            });
+        });
+
+        // Default open based on config
+        let startOnline = true;
         if (typeof this.config.online == 'boolean') {
-            this.config.online ? this.getMicrosoft() : this.getCrack()
-        } else if (typeof this.config.online == 'string') {
-            if (this.config.online.match(/^(http|https):\/\/[^ "]+$/)) {
-                this.getAZauth();
-            }
+            startOnline = this.config.online;
         }
-        
+
+        // Set initial state
+        if (startOnline) {
+            loginHome.classList.add('active-mode');
+            loginOffline.classList.add('inactive-mode');
+        } else {
+            loginHome.classList.add('inactive-mode');
+            loginOffline.classList.add('active-mode');
+        }
+
+        // Sync toggles to initial state
+        toggles.forEach(t => {
+            t.checked = startOnline;
+            const container = t.closest('.login-toggle-container');
+            if (container) {
+                const msIcon = container.querySelector('.icon-microsoft');
+                const offIcon = container.querySelector('.icon-offline');
+                if (startOnline) {
+                    msIcon.classList.add('active');
+                    offIcon.classList.remove('active');
+                } else {
+                    msIcon.classList.remove('active');
+                    offIcon.classList.add('active');
+                }
+            }
+        });
+
+        // AZAuth check (kept separate as it seems like a 3rd distinct mode)
+        if (typeof this.config.online == 'string' && this.config.online.match(/^(http|https):\/\/[^ "]+$/)) {
+            this.getAZauth();
+            loginHome.classList.remove('active-mode');
+            loginHome.classList.add('inactive-mode');
+        }
+
         document.querySelector('.cancel-home').addEventListener('click', () => {
             document.querySelector('.cancel-home').style.display = 'none'
             changePanel('settings')
@@ -32,12 +110,12 @@ class Login {
         let popupLogin = new popup();
         let loginHome = document.querySelector('.login-home');
         let microsoftBtn = document.querySelector('.connect-home');
-        loginHome.style.display = 'block';
+        // display handled by init/switching logic now
 
         microsoftBtn.addEventListener("click", () => {
             popupLogin.openPopup({
-                title: 'Connexion',
-                content: 'Veuillez patienter...',
+                title: 'Conexión',
+                content: 'Por favor espera...',
                 color: 'var(--color)'
             });
 
@@ -52,7 +130,7 @@ class Login {
 
             }).catch(err => {
                 popupLogin.openPopup({
-                    title: 'Erreur',
+                    title: 'Error',
                     content: err,
                     options: true
                 });
@@ -64,16 +142,15 @@ class Login {
         console.log('Initializing offline login...');
         let popupLogin = new popup();
         let loginOffline = document.querySelector('.login-offline');
-
         let emailOffline = document.querySelector('.email-offline');
         let connectOffline = document.querySelector('.connect-offline');
-        loginOffline.style.display = 'block';
+        // display handled by init/switching logic now
 
         connectOffline.addEventListener('click', async () => {
             if (emailOffline.value.length < 3) {
                 popupLogin.openPopup({
-                    title: 'Erreur',
-                    content: 'Votre pseudo doit faire au moins 3 caractères.',
+                    title: 'Error',
+                    content: 'Tu apodo debe tener al menos 3 caracteres.',
                     options: true
                 });
                 return;
@@ -81,8 +158,8 @@ class Login {
 
             if (emailOffline.value.match(/ /g)) {
                 popupLogin.openPopup({
-                    title: 'Erreur',
-                    content: 'Votre pseudo ne doit pas contenir d\'espaces.',
+                    title: 'Error',
+                    content: 'Tu apodo no debe contener espacios.',
                     options: true
                 });
                 return;
@@ -92,7 +169,7 @@ class Login {
 
             if (MojangConnect.error) {
                 popupLogin.openPopup({
-                    title: 'Erreur',
+                    title: 'Error',
                     content: MojangConnect.message,
                     options: true
                 });
@@ -121,15 +198,15 @@ class Login {
 
         AZauthConnectBTN.addEventListener('click', async () => {
             PopupLogin.openPopup({
-                title: 'Connexion en cours...',
-                content: 'Veuillez patienter...',
+                title: 'Conexión en curso...',
+                content: 'Por favor espera...',
                 color: 'var(--color)'
             });
 
             if (AZauthEmail.value == '' || AZauthPassword.value == '') {
                 PopupLogin.openPopup({
-                    title: 'Erreur',
-                    content: 'Veuillez remplir tous les champs.',
+                    title: 'Error',
+                    content: 'Por favor llena todos los campos.',
                     options: true
                 });
                 return;
@@ -139,7 +216,7 @@ class Login {
 
             if (AZauthConnect.error) {
                 PopupLogin.openPopup({
-                    title: 'Erreur',
+                    title: 'Error',
                     content: AZauthConnect.message,
                     options: true
                 });
@@ -156,15 +233,15 @@ class Login {
 
                 connectAZauthA2F.addEventListener('click', async () => {
                     PopupLogin.openPopup({
-                        title: 'Connexion en cours...',
-                        content: 'Veuillez patienter...',
+                        title: 'Conexión en curso...',
+                        content: 'Por favor espera...',
                         color: 'var(--color)'
                     });
 
                     if (AZauthA2F.value == '') {
                         PopupLogin.openPopup({
-                            title: 'Erreur',
-                            content: 'Veuillez entrer le code A2F.',
+                            title: 'Error',
+                            content: 'Por favor ingresa el código A2F.',
                             options: true
                         });
                         return;
@@ -174,7 +251,7 @@ class Login {
 
                     if (AZauthConnect.error) {
                         PopupLogin.openPopup({
-                            title: 'Erreur',
+                            title: 'Error',
                             content: AZauthConnect.message,
                             options: true
                         });
@@ -216,5 +293,16 @@ class Login {
         await accountSelect(account);
         changePanel('home');
     }
+
+    // Helper to refresh state when panel becomes active
+    refreshState() {
+        const toggles = document.querySelectorAll('.toggle-input');
+        // Trigger a change to ensure correct visibility
+        if (toggles.length > 0) {
+            const event = new Event('change');
+            toggles[0].dispatchEvent(event);
+        }
+    }
 }
+// Create a singleton instance if possible or simply rely on re-instantiation logic in utils
 export default Login;

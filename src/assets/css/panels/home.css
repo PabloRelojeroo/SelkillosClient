@@ -1,43 +1,123 @@
+/* ============================================
+   ANIMACIONES GLOBALES
+   ============================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+/* ============================================
+   CONTAINER PRINCIPAL
+   ============================================ */
+
 .home .container {
+    padding-left: 90px;
     display: flex;
     height: 100%;
     flex-direction: column;
     align-items: center;
+    animation: fadeIn 0.5s ease-out;
 }
 
-/*******************************************************************************
- *                                                                             *
- * Status server                                                               *
- *                                                                             *
- ******************************************************************************/
+/* ============================================
+   STATUS DEL SERVIDOR
+   ============================================ */
 
 .status-server {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--background);
+    background: var(--background-transparent);
+    backdrop-filter: blur(10px);
     width: 25rem;
     height: 3rem;
     color: var(--color);
-    border-radius: 10px;
+    border-radius: 15px;
     margin-top: 3rem;
     padding: 1rem;
     text-align: center;
+    box-shadow: 0 8px 32px var(--shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: slideIn 0.5s ease-out;
+}
+
+.status-server:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px var(--shadow);
 }
 
 .server-status-icon {
     height: 3.3rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 189, 122, 0.3);
+}
+
+.server-status-icon:hover {
+    transform: rotate(360deg) scale(1.1);
 }
 
 .server-status-name {
     font-size: 1.5rem;
-    color: var(--color);
+    color: var(--element-color);
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .server-status-text {
     font-size: 0.6rem;
     color: #1AC707;
+    transition: all 0.3s ease;
+}
+
+.status-server:hover .server-status-text {
+    opacity: 1;
 }
 
 .server-status-infos .red {
@@ -45,15 +125,27 @@
 }
 
 .status-player-count {
-    background: var(--shadow);
+    background: var(--element-color);
     min-width: 3rem;
     height: 3rem;
-    border-radius: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 189, 122, 0.4);
+    transition: all 0.3s ease;
+}
+
+.status-player-count:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 189, 122, 0.6);
 }
 
 .player-count {
     font-size: 1.5rem;
-    margin: 0.4rem 0.5rem;
+    margin: 0;
+    color: white;
+    font-weight: bold;
 }
 
 .status-player-count:after {
@@ -74,22 +166,21 @@
 
 .home-bottom {
     position: relative;
-    width: 100%;
     height: calc(100% - 80px - 8rem);
     display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/*******************************************************************************
- *                                                                             *
- * news server                                                                 *
- *                                                                             *
- ******************************************************************************/
+/* ============================================
+   NEWS SERVER
+   ============================================ */
 
 .new-tab {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 85%;
+    width: calc(85% - 90px);
     height: 100%;
 }
 
@@ -140,13 +231,11 @@
     padding: 0 1.5rem;
     padding-bottom: 1rem;
     font-size: 1.2rem;
-
 }
 
 .news-content .bbWrapper p {
     font-weight: 100;
     margin: 0;
-
 }
 
 .news-content .bbWrapper .news-author {
@@ -159,18 +248,16 @@
     font-weight: 700;
 }
 
-/*******************************************************************************
- *                                                                             *
- * social server                                                               *
- *                                                                             *
- ******************************************************************************/
+/* ============================================
+   SOCIAL SERVER
+   ============================================ */
 
 .social-tab {
     position: absolute;
     display: flex;
     bottom: 0;
     right: 0;
-    width: 15%;
+    width: calc(15% - 90px);
     height: calc(80% - 1rem);
     justify-content: center;
     margin-bottom: 1rem;
@@ -202,32 +289,211 @@
     filter: var(--svg-color);
 }
 
-/*******************************************************************************
- *                                                                             *
- * sidebar                                                                     *
- *                                                                             *
- ******************************************************************************/
+/* ============================================
+   SIDEBAR
+   ============================================ */
 
 .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    height: 90px;
-    background: var(--background-transparent);
+    width: 90px;
+    height: 100vh;
 }
+
+.sidebar-logos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 10px;
+    background: var(--background-transparent);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px var(--shadow);
+    margin-top: 2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Fix horizontal scroll */
+    animation: fadeIn 0.6s ease-out 0.2s both;
+    position: relative;
+}
+
+.sidebar-logos::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.sidebar-logos:hover::before {
+    left: 100%;
+}
+
+.sidebar-logos::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar-logos::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-logos::-webkit-scrollbar-thumb {
+    background: var(--element-color);
+    border-radius: 5px;
+}
+
+/* ============================================
+   LOGOS DE INSTANCIAS
+   ============================================ */
+
+.instance-logo-container {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.7;
+    position: relative;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 4px 0;
+    background: transparent;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.instance-logo-container:hover:not(.active-instance) {
+    opacity: 1;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(0, 189, 122, 0.1));
+    border-color: rgba(76, 175, 80, 0.3);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+}
+
+.instance-logo-container.active-instance {
+    opacity: 1;
+    background: linear-gradient(135deg, rgba(0, 189, 122, 0.3), rgba(38, 102, 40, 0.6));
+    border: 2px solid var(--element-color);
+    transform: scale(1.1);
+    box-shadow: 0 12px 30px rgba(0, 189, 122, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.instance-logo {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
+}
+
+.instance-logo-container:not(.active-instance) .instance-logo {
+    filter: grayscale(60%) brightness(0.8);
+}
+
+.instance-logo-container:hover:not(.active-instance) .instance-logo {
+    filter: grayscale(0%) brightness(1);
+    transform: rotate(-5deg);
+}
+
+.instance-logo-container.active-instance .instance-logo {
+    filter: none;
+}
+
+.instance-logo-container[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-left: 10px;
+    white-space: nowrap;
+    z-index: 1000;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   BOTÓN DE AGREGAR INSTANCIA
+   ============================================ */
+
+.add-instance-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    background: linear-gradient(135deg, rgba(0, 189, 122, 0.2), rgba(0, 150, 100, 0.3));
+    border: 2px dashed var(--element-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.add-instance-btn::before {
+    content: '+';
+    font-size: 3rem;
+    color: var(--element-color);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    font-weight: bold;
+}
+
+.add-instance-btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--element-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+.add-instance-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    border-style: solid;
+    box-shadow: 0 8px 25px rgba(0, 189, 122, 0.4);
+}
+
+.add-instance-btn:hover::after {
+    opacity: 0.2;
+}
+
+.add-instance-btn:hover::before {
+    transform: rotate(90deg);
+    color: white;
+}
+
+/* ============================================
+   PLAYER OPTIONS
+   ============================================ */
 
 .player-options {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
     border-radius: 15px;
-    height: 3rem;
-    margin: 0 1.5rem;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
 }
 
 .player-head {
-    background: url('../../images/default/setve.png'), no-repeat;
+    background: url('../../images/default/setve.png') no-repeat;
     background-size: cover;
     image-rendering: pixelated;
     transition: var(--transition);
@@ -243,84 +509,457 @@
     pointer-events: none;
 }
 
+/* ============================================
+   PLAY ELEMENTS
+   ============================================ */
+
 .play-elements {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+    animation: fadeIn 0.7s ease-out 0.3s both;
+    z-index: 100;
 }
 
 .play-instance {
+    /* NUNCA ocultar por defecto - JavaScript lo manejará */
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     position: relative;
     border: solid 3px var(--element-color);
     border-radius: 15px;
     height: 3.2rem;
-    padding-right: 1.9rem;
+    padding: 0;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background: var(--background-transparent);
+    backdrop-filter: blur(10px);
+}
+
+.play-instance:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 189, 122, 0.5);
+}
+
+.play-instance:active {
+    transform: translateY(-1px);
 }
 
 .play-btn {
     border: none;
     border-radius: 10px;
-    background: none;
-    color: var(--color);
+    background: linear-gradient(90deg, var(--element-color), #00ff88, var(--element-color));
+    background-size: 200% 100%;
+    color: white;
     font-size: 2rem;
     font-weight: bolder;
-    padding: 0 1.5rem;
-    pointer-events: none;
-}
-
-.instance-select {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: -3;
-    top: -2;
-    color: var(--element-color);
-    font-size: 1rem;
-    height: calc(100% - 1px);
-    border: solid 3px var(--element-color);
-    text-align: center;
-    border-radius: 15px;
-    padding: 0 0.5rem;
+    padding: 0 2rem;
     cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    animation: gradient-shift 3s ease infinite;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
 }
 
-.instance-select:before {
-    transform: rotate(270deg);
-    pointer-events: none;
+.play-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
 }
+
+.play-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.play-btn:hover {
+    background-size: 150% 100%;
+}
+
+.play-btn.disabled {
+    background: linear-gradient(135deg, #666, #444);
+    cursor: not-allowed;
+    opacity: 0.6;
+    animation: none;
+}
+
+.play-btn.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.play-btn.disabled::before {
+    display: none;
+}
+
+/* Clase helper para ocultar */
+.hidden {
+    display: none !important;
+}
+
+
+/* ============================================
+   INFO DE DESCARGA
+   ============================================ */
 
 .info-starting-game {
     display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 25px;
+    background: var(--background-transparent);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px var(--shadow);
+    animation: fadeIn 0.4s ease-out;
+    min-width: 300px;
     text-align: center;
 }
 
+.info-starting-game-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--element-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.game-running {
+    color: #1AC707;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   PROGRESS BAR MEJORADA
+   ============================================ */
+
+.progress-container {
+    position: relative;
+    width: 100%;
+    height: 35px;
+    background: var(--background-element);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 .progress-bar {
+    width: 100%;
+    height: 100%;
     appearance: none;
-    height: 10px;
-    margin: 0.5rem 0;
+    border: none;
+    background: transparent;
+    position: relative;
 }
 
 .progress-bar::-webkit-progress-bar {
-    background-color: var(--background);
-    border: solid 1px var(--element-color);
-    border-radius: 10px;
+    background: transparent;
 }
 
 .progress-bar::-webkit-progress-value {
-    background-color: var(--element-color);
-    border-radius: 10px;
+    background: linear-gradient(90deg,
+            var(--element-color) 0%,
+            #00ff88 50%,
+            var(--element-color) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 189, 122, 0.5);
+    transition: width 0.3s ease;
 }
 
-.settings-btn {
-    width: 3rem;
-    height: 3rem;
-    font-size: 3rem;
-    color: var(--element-color);
-    margin: 0 1.5rem;
+.progress-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    z-index: 1;
+    pointer-events: none;
 }
+
+/* ============================================
+   ESTADÍSTICAS DE DESCARGA
+   ============================================ */
+
+.download-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 0 10px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    animation: fadeIn 0.5s ease-out;
+    width: 100%;
+}
+
+.download-speed,
+.download-eta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background: rgba(0, 189, 122, 0.1);
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.download-speed {
+    color: #1AC707;
+}
+
+.download-speed::before {
+    content: '⬇';
+    font-size: 1.2rem;
+}
+
+.download-eta {
+    color: #ffaa00;
+}
+
+.download-eta::before {
+    content: '⏱';
+    font-size: 1.2rem;
+}
+
+.download-speed:hover,
+.download-eta:hover {
+    background: rgba(0, 189, 122, 0.2);
+    transform: scale(1.05);
+}
+
+/* ============================================
+   ANIMACIÓN DE CARGA
+   ============================================ */
+
+.loading-animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+}
+
+.loading-dots {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 20px;
+}
+
+.loading-dots::before,
+.loading-dots::after {
+    content: '';
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--element-color);
+    animation: loading 1.4s infinite ease-in-out both;
+}
+
+.loading-dots::before {
+    left: 0;
+    animation-delay: -0.32s;
+}
+
+.loading-dots::after {
+    left: 33px;
+}
+
+@keyframes loading {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   SETTINGS BUTTON
+   ============================================ */
+
+.settings-btn {
+    width: 60px;
+    height: 60px;
+    background: var(--background-transparent);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px var(--shadow);
+    position: relative;
+    overflow: hidden;
+    font-size: 2rem;
+    color: var(--element-color);
+    margin-bottom: 1rem;
+}
+
+.settings-btn::before {
+    transition: all 0.3s ease;
+}
+
+.settings-btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--element-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.settings-btn:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 189, 122, 0.4);
+}
+
+.settings-btn:hover::before {
+    animation: rotate 0.6s ease-in-out;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.settings-btn:hover::after {
+    opacity: 0.9;
+}
+
+/* ============================================
+   MODAL DE CÓDIGO DE INSTANCIA
+   ============================================ */
+
+.instance-code-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.instance-code-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--background);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    width: 90%;
+    animation: slideIn 0.4s ease-out;
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--element-color);
+    text-align: center;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1rem;
+    border: 2px solid var(--element-color);
+    border-radius: 10px;
+    background: var(--background-element);
+    color: var(--color);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-input:focus {
+    outline: none;
+    border-color: #00ff88;
+    box-shadow: 0 0 20px rgba(0, 189, 122, 0.3);
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.modal-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-btn-primary {
+    background: linear-gradient(135deg, var(--element-color), #008f5d);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 189, 122, 0.3);
+}
+
+.modal-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 189, 122, 0.5);
+}
+
+.modal-btn-secondary {
+    background: var(--background-element);
+    color: var(--color);
+}
+
+.modal-btn-secondary:hover {
+    background: var(--element-color);
+    color: white;
+}
+
+/* ============================================
+   INSTANCE POPUP (ORIGINAL)
+   ============================================ */
 
 .instance-popup {
     position: absolute;
@@ -335,44 +974,37 @@
     text-align: center;
 }
 
-.instances-tab {
-    position: relative;
-    background: var(--background);
-    border-radius: 10px;
-    padding: 1rem 3rem;
+/* ============================================
+   TRANSICIONES SUAVES
+   ============================================ */
+
+body {
+    transition: background-image 0.5s ease-in-out, opacity 0.3s ease;
 }
 
-.close-popup {
-    position: absolute;
-    display: flex;
-    top: 10px;
-    right: 10px;
-    background: var(--shadow);
-    height: 30px;
-    width: 30px;
-    border-radius: 10px;
-    align-items: center;
-    justify-content: center;
-}
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 
-.instances-tab p {
-    margin-top: 1.5rem;
-    font-size: 2rem;
-}
+@media (max-width: 768px) {
+    .sidebar-logos {
+        justify-content: center;
+    }
 
-.instance-elements {
-    background: var(--background-element);
-    text-align: center;
-    border-radius: 10px;
-    margin: 0.5rem 0;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
+    .play-btn {
+        padding: 0 1.5rem;
+        font-size: 1.5rem;
+    }
 
-.instance-elements:hover {
-    background: var(--element-color);
-}
+    .modal-content {
+        padding: 25px;
+    }
 
-.active-instance {
-    background: var(--element-color);
+    .status-server {
+        width: 90%;
+    }
+
+    .info-starting-game {
+        min-width: 250px;
+    }
 }

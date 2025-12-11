@@ -12,13 +12,67 @@
     border-radius: 15px;
     text-align: center;
     min-width: 40%;
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+    opacity: 0;
+    transform: scale(0.95);
+    visibility: hidden;
+    pointer-events: none;
+    /* Ensure centering if absolute */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
 }
 
-.login-home,
-.login-offline,
-.login-AZauth,
-.login-AZauth-A2F {
+.login-tabs.active-mode {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 10;
+}
+
+.login-tabs.inactive-mode {
+    opacity: 0;
+    visibility: hidden;
+    /* allow pointer events to pass through if hidden, but ensure active one is on top */
+    transform: translate(-50%, -50%) scale(0.95);
+    z-index: 1;
+}
+
+/* Fix for frozen state: Ensure the container itself doesn't block clicks if it's the active panel */
+.login.active {
+    pointer-events: all;
+}
+
+/* Sub-panel visibility logic */
+.login-home.inactive-mode,
+.login-offline.inactive-mode,
+.login-AZauth.inactive-mode,
+.login-AZauth.inactive-mode {
+    /* Duplicate selector fix if needed, assuming AZauth-A2F */
     display: none;
+}
+
+.login-AZauth-A2F.inactive-mode {
+    display: none;
+}
+
+.login-home.active-mode,
+.login-offline.active-mode,
+.login-AZauth.active-mode,
+.login-AZauth-A2F.active-mode {
+    display: block;
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Ensure buttons are clickable and visible */
+.connect,
+.cancel {
+    pointer-events: all;
+    cursor: pointer;
+    position: relative;
+    /* Fix z-index stacking if any */
+    z-index: 10;
 }
 
 .login-text {
