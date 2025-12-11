@@ -142,6 +142,14 @@ class Splash {
     setStatus(text) {
         this.message.innerHTML = text;
     }
+    toggleProgress() {
+        if (this.progress.classList.toggle("show")) this.setProgress(0, 1);
+    }
+
+    setProgress(value, max) {
+        this.progress.value = value;
+        this.progress.max = max;
+    }
 }
 
 // Fade out listener
@@ -149,16 +157,6 @@ ipcRenderer.on('splash-fade-out', () => {
     document.body.style.transition = "opacity 1s ease";
     document.body.style.opacity = "0";
 });
-
-toggleProgress() {
-    if (this.progress.classList.toggle("show")) this.setProgress(0, 1);
-}
-
-setProgress(value, max) {
-    this.progress.value = value;
-    this.progress.max = max;
-}
-}
 
 function sleep(ms) {
     return new Promise(r => setTimeout(r, ms));
